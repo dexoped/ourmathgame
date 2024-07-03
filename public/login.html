@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <title>Login</title>
 </head>
 <body style="background: linear-gradient(#8FF277, #05F9DC);" >
@@ -20,17 +21,33 @@
                     <form action="Dash.html" id="UF" class="flex-wrap justify-evenly">
                         <label for="name" class="text-md w-40 inline-block font-medium leading-5 text-black  mx-11">Name</label>
                         <input required type="text" id="name" name="name" class="bg-gray-100 inline-block rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500 mx-11" placeholder="Type the Name">
-
-                        <label for="Password" class=" mx-11 text-md w-40 inline-block font-medium leading-5 text-black">PassWord</label>
+                        
+                        <label for="Password" class=" mx-11 text-md w-40 inline-block font-medium leading-5 text-black">Password</label>
                         <input required type="password" id="password" name="password" minlength="8" maxlength="8" class=" mx-11  inline-block rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500" placeholder="**********">
+                        <i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
+<br>
+                        
 
-                  &nbsp;     &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    <button type="link" id="Login" class=" rounded-lg shadow-lg px-6 py-3 mb-5  text-white hover:bg-navy-500 focus:outline-none mx-11 "  
+                          &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    <button type="link" id="Login" class=" rounded-lg shadow-lg px-6 py-3 mb-5  text-white hover:bg-navy-500 focus:outline-none mx-11 "  
                         style = "background-color: rgb(16, 16, 218);">Login</button>
                     </form>
-                 &nbsp;     &nbsp;    &nbsp;    &nbsp;    &nbsp;       <h5 class="px-10 py-6 text-md w-40 inline-block font-medium leading-5 text-black">new here</h5><a href="Registeration.html">Register</a>
+                    &nbsp;     &nbsp;    &nbsp;    &nbsp;    &nbsp;  <h5 class="px-10 py-6 text-md w-40 inline-block font-medium leading-5 text-black">New Here</h5><a href="Registeration.html">Register</a>
                     </div>
                 </div>
             </div>
         </div>
+ <script>
+    const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#password');
+
+togglePassword.addEventListener('click', function (e) {
+  // Toggle the type attribute between 'password' and 'text'
+  const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+  password.setAttribute('type', type);
+
+  // Toggle the eye icon class
+  this.classList.toggle('fa-eye-slash');
+});
+ </script>
 </body>
 </html>
