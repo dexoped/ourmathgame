@@ -2,8 +2,23 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
+const url = 'mongodb://localhost:27017';
+const dbName = 'loginDB';
+let db;
+const MongoClient = require('mongodb').MongoClient;
+
 const app = express();
-const PORT = 3001;
+const port = 3001;
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/public'));
+
+MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+    if (err) return console.error(err);
+    console.log('Connected to Database');
+    db = client.db(dbName);
+});
 
 // Middleware to parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,18 +31,38 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-// Handle form submission
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    // Implement your authentication logic here
-    if (username === 'user' && password === 'pass') {
-        res.send('Login successful!');
-    } else {
-        res.send('Login failed. Invalid username or password.');
-    }
+
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/index.html');
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.post('/register', (req, res) => {
+    const { name, password } = req.body;
+   
+
+    const user = { username: name, password: password };
+
+    db.collection('users').insertOne(user, (err, result) => {
+        if (err) {
+            return res.status(500).send('Error occurred while inserting user');
+        }
+        res.redirect('/login.html');
+    });
+});
+
+app.post('/login', (req, res) => {
+    const { name, password } = req.body;
+    if (!name || !password) {
+        return res.status(400).send('Both name and password are required');
+    }
+
+    db.collection('users').findOne({ username: name, password: password }, (err, user) => {
+        if (err) return res.status(500).send('Error occurred while checking credentials.');
+        if (!user) return res.status(401).send('Invalid credentials');
+        res.redirect('/Dash.html');
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
