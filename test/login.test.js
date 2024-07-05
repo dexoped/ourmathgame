@@ -1,7 +1,7 @@
 // test/login.test.js
 const { expect } = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../server'); // Assuming your server file is named server.js
+const server = require('../index'); 
 
 chai.use(chaiHttp);
 
