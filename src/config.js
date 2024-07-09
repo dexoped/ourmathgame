@@ -1,24 +1,25 @@
 const mongoose = require("mongoose");
-const connect = mongoose.connect("mongodb://localhost:27017/loginDB");
 
-connect.then(()=>{
-    console.log("database connected successfully");
-})
-.catch(()=>{
-    console.log("Not Connected to database");
+mongoose.connect("mongodb://localhost:27017/loginDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log("Database connected successfully");
+}).catch((error) => {
+  console.log("Not Connected to Database:", error);
 });
 
 const LoginSchema = new mongoose.Schema({
-name:{
+  name: {
     type: String,
     required: true
-},
-password:{
-    type:String,
+  },
+  password: {
+    type: String,
     required: true
-}
+  }
 });
 
-const collection = new mongoose.model("users", LoginSchema);
+const collection = mongoose.model("users", LoginSchema);
 
 module.exports = collection;
