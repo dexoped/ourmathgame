@@ -38,15 +38,29 @@
                     </option>
                     <option>female</option>
                 </select>  <br>
+<br><br>
 <br>
                   
 
-&nbsp;     &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;     &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    <button type="submit" id="Register" class=" inline-block rounded-lg shadow-lg px-8 py-5 text-white hover:bg-navy-500 focus:outline-none mx-11 "  
+&nbsp;     &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;     &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    <button type="submit" id="Register" class=" inline-block rounded-lg shadow-lg px-8 py-3 text-white hover:bg-navy-500 focus:outline-none mx-11 "  
 style = "background-color: rgb(16, 16, 218);">Register</button>
 
                     </form>
                 </div>
             </div>
         </div>
+        <script>
+            const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+        
+        togglePassword.addEventListener('click', function (e) {
+          // Toggle the type attribute between 'password' and 'text'
+          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+          password.setAttribute('type', type);
+        
+          // Toggle the eye icon class
+          this.classList.toggle('fa-eye-slash');
+        });
+         </script>
 </body>
 </html>
