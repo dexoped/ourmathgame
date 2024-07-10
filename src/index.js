@@ -25,7 +25,7 @@ app.get("/", (req, res)=> {
 
 app.get("/Dash",(req,res)=>{
     if (req.session.user) {
-        res.render("Dash");
+        res.render("Dash", { username: req.session.user.name });
       } else {
         res.redirect("/");
       }
