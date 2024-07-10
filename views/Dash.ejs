@@ -4,9 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Dashboard</title>
 </head>
-<body>
-   <h1 class="text-4xl text-black text-bold ">  </h1>
+<body style="background: linear-gradient(162deg,#8FF277 37%, #05F9DC 100%); height: 110vh;" >
+    <div class="h-15 border-8 border-green-300 bg-green-300" style="height: 80px;">  <h1 class="text-4xl font-bold text-center pt-3"> Our Math Game</h1></div>
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold"> <span class=""><%= username %></span></h1>
+
+      </div>
+
+      <div class="container mx-auto p-4">
+        <div class="grid grid-cols-3 gap-4">
+            <!-- Average Accuracy -->
+            <div class="bg-blue-500 p-4 rounded-lg">
+                <h2 class="text-2xl">Average Accuracy</h2>
+                <p class="text-4xl"><%= averageAccuracy %></p>
+                <p class="text-lg">+<%= accuracyChange %> month over month</p>
+            </div>
+    
+            <!-- Average Speed -->
+            <div class="bg-blue-500 p-4 rounded-lg">
+                <h2 class="text-2xl">Average Speed</h2>
+                <p class="text-4xl"><%= averageSpeed %></p>
+                <p class="text-lg">-<%= speedChange %> month over month</p>
+            </div>
+    
+            <!-- Times Played -->
+            <div class="bg-blue-500 p-4 rounded-lg">
+                <h2 class="text-2xl">Times Played</h2>
+                <p class="text-4xl"><%= timesPlayed %>+</p>
+            </div>
+        </div>
+    
+        <div class="mt-8 grid grid-cols-2 gap-4">
+            <!-- Record Table -->
+            <div class="bg-blue-500 p-4 rounded-lg">
+                <h2 class="text-2xl">Record</h2>
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="text-left">GAME NUMBER</th>
+                            <th class="text-left">ACCURACY</th>
+                            <th class="text-left">SPEED</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% records.forEach(record => { %>
+                        <tr>
+                            <td><%= record.gameNumber %></td>
+                            <td><%= record.accuracy %></td>
+                            <td><%= record.speed %></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                <a href="/game">New Game</a>
+            </div>
+          
+   
+
 </body>
 </html>

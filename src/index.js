@@ -23,13 +23,42 @@ app.get("/", (req, res)=> {
     
 });
 
-app.get("/Dash",(req,res)=>{
+app.get("/Dash", async (req, res) => {
     if (req.session.user) {
-        res.render("Dash", { username: req.session.user.name });
-      } else {
+        try {
+            // Fetch data for the dashboard
+            const averageAccuracy = 78.90; // Replace with actual query
+            const accuracyChange = '20%'; // Replace with actual query
+            const averageSpeed = 59.48; // Replace with actual query
+            const speedChange = '8%'; // Replace with actual query
+            const timesPlayed = 3000; // Replace with actual query
+            const records = [
+                { gameNumber: 300, accuracy: 123, speed: 456 },
+                { gameNumber: 299, accuracy: 123, speed: 456 },
+                { gameNumber: 298, accuracy: 123, speed: 456 },
+                { gameNumber: 297, accuracy: 123, speed: 456 },
+                { gameNumber: 296, accuracy: 123, speed: 456 }
+            ]; // Replace with actual query
+            const timesPlayedData = [3000, 2500, 2000, 4000, 5000, 3500, 3000, 2800, 3200, 2900, 100, 50]; // Replace with actual query
+
+            res.render("Dash", {
+                username: req.session.user.name,
+                averageAccuracy,
+                accuracyChange,
+                averageSpeed,
+                speedChange,
+                timesPlayed,
+                records,
+                timesPlayedData
+            });
+        } catch (error) {
+            console.error('Error fetching dashboard data:', error);
+            res.send('Error fetching dashboard data');
+        }
+    } else {
         res.redirect("/");
-      }
-})
+    }
+});
 app.get("/register", (req, res)=> {
     res.render("register")
 });
