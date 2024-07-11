@@ -59,6 +59,14 @@ app.get("/Dash", async (req, res) => {
         res.redirect("/");
     }
 });
+app.get("/selection", (req, res) => {
+  if (req.session.user) {
+      res.render("selection");
+  } else {
+      res.redirect("/");
+  }
+});
+
 app.get("/register", (req, res)=> {
     res.render("register")
 });
