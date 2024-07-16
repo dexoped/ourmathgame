@@ -67,6 +67,12 @@ app.get("/selection", (req, res) => {
   }
 });
 
+app.get('/game', (req, res) => {
+  const { operator, difficulty } = req.query;
+  res.render('game', { operator, difficulty });
+});
+
+
 app.get("/register", (req, res)=> {
     res.render("register")
 });
