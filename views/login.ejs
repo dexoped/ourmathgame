@@ -8,47 +8,47 @@
     <title>Login</title>
 </head>
 <body style="background: linear-gradient(162deg,#8FF277 37%, #05F9DC 100%);" >
-    <div class="relative flex min-h-screen  flex-col  justify-center overflow-hidden py-6 bg-red">
-        <div class="relative bg-white/30  px-6 pt-5 pb-5 shadow-xl  sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10  ">
-        <h2 class="text-3xl text-center font-bold leading-tight">
-            Welcome to Our Math Game
-        </h2><br><br> 
-        <div class="relative  px-6 pt-5 pb-5 shadow-2xl bg-cyan-300/50 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10 ">
-            <div class="mx-auto max-w-md ">
-               
-
-                
+    <div class="relative flex min-h-screen flex-col justify-center overflow-hidden py-6 bg-red">
+        <div class="relative bg-white/30 px-6 pt-5 pb-5 shadow-xl sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10">
+            <h2 class="text-3xl text-center font-bold leading-tight">
+                Welcome to Our Math Game
+            </h2><br><br> 
+            <div class="relative px-6 pt-5 pb-5 shadow-2xl bg-cyan-300/50 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10">
+                <div class="mx-auto max-w-md">
                     <form action="/login" id="UF" method="post" class="flex-wrap justify-evenly">
-                        <label for="name" class="text-md w-40 inline-block font-medium leading-5 text-black  mx-11">Name</label>
-                        <input required type="text" id="name" name="name"  maxlength="40" class="bg-gray-100 inline-block rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500 mx-11" placeholder="Type the Name">
-                        
-                        <label for="Password" class=" mx-11 text-md w-40 inline-block font-medium leading-5 text-black">Password</label>
-                        
-                        <input required type="password" id="password" name="password" minlength="8" maxlength="8" class=" mx-11  inline-block rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500"  placeholder="**********">
-                        <i class="far fa-eye" id="togglePassword" style="margin-left: -80px; cursor: pointer;"></i>
-<br>
-                        
-
-                          &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    &nbsp;    <button type="submit" id="Login" class=" rounded-lg shadow-lg px-6 py-3 mb-5  text-white hover:bg-navy-500 focus:outline-none mx-11 "  
-                        style = "background-color: rgb(16, 16, 218);">Login</button>
-                    </form>
-                     <h5 class="px-10 py-6 text-md w-40 inline-block font-medium leading-5 text-black md:flex-col md:items-center md:justify-self-center ">New Here?</h5><a href="/register">Register</a>
+                        <label for="name" class="mx-11 text-md w-40 inline-block font-medium leading-5 text-black">Name</label>
+                        <div class="relative mx-11">
+                        <input required type="text" id="name" name="name" maxlength="40" class="inline-block rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500 w-full" placeholder="Type the Name">
+                        </div>
+                        <label for="Password" class="mx-11 text-md w-40 inline-block font-medium leading-5 text-black">Password</label>
+                        <div class="relative mx-11">
+                            <input required type="password" id="password" name="password" minlength="8" maxlength="8" class="inline-block rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500 w-full" placeholder="**********">
+                            <i class="fas fa-eye-slash absolute right-3 top-3 cursor-pointer" id="togglePassword"></i>
+                        </div>
+                       <div class="felx justify-center">
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <button type="submit" id="Login" class="rounded-lg shadow-lg px-6 py-3 mb-5 text-white hover:bg-navy-500 focus:outline-none mx-11" style="background-color: rgb(16, 16, 218);">Login</button>
                     </div>
+                    </form>
+                    <h5 class="px-10 py-6 text-md w-40 inline-block font-medium leading-5 text-black md:flex-col md:items-center md:justify-self-center">New Here?</h5>
+                    <a href="/register">Register</a>
                 </div>
             </div>
         </div>
- <script>
-    const togglePassword = document.querySelector('#togglePassword');
-const password = document.querySelector('#password');
+    </div>
 
-togglePassword.addEventListener('click', function (e) {
-  // Toggle the type attribute between 'password' and 'text'
-  const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-  password.setAttribute('type', type);
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
 
-  // Toggle the eye icon class
-  this.classList.toggle('fa-eye-slash');
-});
- </script>
+        togglePassword.addEventListener('click', function (e) {
+            // Toggle the type attribute between 'password' and 'text'
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            // Toggle the eye icon class
+            this.classList.toggle('fa-eye-slash');
+            this.classList.toggle('fa-eye');
+        });
+    </script>
 </body>
 </html>
