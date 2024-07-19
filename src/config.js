@@ -23,6 +23,17 @@ const LoginSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  quizzes: [
+    {
+      accuracy: Number,
+      speed: Number,
+      totalTime: Number,
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
 const collection = mongoose.model("users", LoginSchema);

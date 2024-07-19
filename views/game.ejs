@@ -6,8 +6,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Quiz Screen</title>
 </head>
-<body style="background: linear-gradient(162deg,#8FF277 37%, #05F9DC 100%); height: 130vh;" >
-    <div class="h-15 border-8 border-green-300 bg-green-300" style="height: 80px;">  <h1 class="text-4xl font-bold text-center pt-3"> Our Math Game</h1></div>
+<body style="background: linear-gradient(162deg,#8FF277 37%, #05F9DC 100%); height: 130vh;">
+    <div class="h-15 border-8 border-green-300 bg-green-300" style="height: 80px;">
+        <h1 class="text-4xl font-bold text-center pt-3">Our Math Game</h1>
+    </div>
     <div class="container mx-auto p-4 flex-grow flex flex-col items-center">
         <div class="w-full max-w-4xl bg-opacity-50 bg-white p-8 rounded-lg shadow-lg">
             <div class="flex justify-center items-center mb-4">
@@ -15,24 +17,30 @@
                     <span id="timer">00:00:00</span>
                 </div>
             </div>
-            <div id="questions" class="space-y-4 mx-10 ">
+            <div id="questions" class="space-y-4 mx-10">
                 <!-- Questions will be dynamically inserted here -->
             </div>
             <div class="flex justify-center mt-6">
                 <button id="submit-button" class="bg-blue-600 text-white py-2 px-6 rounded-lg text-xl" onclick="submitAnswers()">Submit</button>
             </div>
         </div>
+        <div id="results" class="w-full max-w-4xl bg-opacity-50 bg-white p-8 rounded-lg shadow-lg mt-6 hidden">
+            <h2 class="text-2xl font-bold text-center">Results</h2>
+            <p id="accuracy" class="text-xl text-center mt-2"></p>
+            <p id="speed" class="text-xl text-center mt-2"></p>
+        </div>
     </div>
 
     <script>
-        let selectedOperator = "<%= operator %>";
-        let selectedDifficulty = "<%= difficulty %>";
+        let selectedOperator = "<%= operator %>"; 
+        let selectedDifficulty = "<%= difficulty %>"; 
         let startTime;
+        let timerInterval;
 
         function startTimer() {
             startTime = Date.now();
             const timerElement = document.getElementById("timer");
-            setInterval(() => {
+            timerInterval = setInterval(() => {
                 const elapsedTime = Date.now() - startTime;
                 const seconds = Math.floor((elapsedTime / 1000) % 60);
                 const minutes = Math.floor((elapsedTime / 1000 / 60) % 60);
@@ -44,20 +52,21 @@
 
         function generateRandomNumber(difficulty) {
             if (difficulty === 'easy') return Math.floor(Math.random() * 10);
-            if (difficulty === 'medium') return Math.floor(Math.random() * 90) + 10;
-            return Math.floor(Math.random() * 90) + 10;
+            if (difficulty === 'medium') return Math.floor(Math.random() * 90) + 1; // Single or double digit
+            return Math.floor(Math.random() * 90) + 10; // Double digit
         }
 
         function generateQuestions(operator, difficulty) {
             const questionsContainer = document.getElementById('questions');
+            questionsContainer.innerHTML = ''; // Clear any existing questions
             for (let i = 0; i < 10; i++) {
                 const num1 = generateRandomNumber(difficulty);
                 const num2 = generateRandomNumber(difficulty);
                 const question = document.createElement('div');
                 question.className = 'flex items-center justify-between p-2 bg-blue-200 rounded-lg';
                 question.innerHTML = `
-                    <span>${num1} ${selectedOperator} ${num2} = </span>
-                    <input type="text" class="answer-input w-24 mx-11 p-2 rounded-lg shadow" data-num1="${num1}" data-operator="${selectedOperator}" data-num2="${num2}">
+                    <span class="text-xl text-center mt-2">&nbsp;&nbsp;${num1} &nbsp; &nbsp;${operator}&nbsp;&nbsp; ${num2}&nbsp;&nbsp; = </span>
+                  <input type="text" class="answer-input w-24 mx-11 p-2 rounded-lg shadow" data-num1="${num1}" data-operator="${operator}" data-num2="${num2}">
                     <span class="correct-answer"></span>
                 `;
                 questionsContainer.appendChild(question);
@@ -66,6 +75,7 @@
 
         function submitAnswers() {
             const inputs = document.querySelectorAll('.answer-input');
+            let correctAnswersCount = 0;
             inputs.forEach(input => {
                 const num1 = parseInt(input.getAttribute('data-num1'));
                 const operator = input.getAttribute('data-operator');
@@ -81,22 +91,54 @@
                 const answerDisplay = input.nextElementSibling;
                 answerDisplay.textContent = `Correct: ${correctAnswer}`;
                 answerDisplay.style.display = 'block';
-                if (userAnswer !== correctAnswer) {
-                    input.classList.add('wrong-answer');
-                } else {
+                if (userAnswer === correctAnswer) {
+                    correctAnswersCount++;
                     input.classList.remove('wrong-answer');
+                } else {
+                    input.classList.add('wrong-answer');
                 }
             });
 
             // Stop the timer
-            clearInterval(startTimer);
+            clearInterval(timerInterval);
+
+            // Calculate accuracy and speed
+            const totalTime = (Date.now() - startTime) / 1000; // total time in seconds
+            const accuracy = (correctAnswersCount / inputs.length) * 100;
+            const speed = totalTime / inputs.length; // average time per question in seconds
+
+            // Send results to server
+            fetch('/submit-quiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ accuracy, speed, totalTime })
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Quiz results submitted successfully');
+                } else {
+                    console.log('Failed to submit quiz results');
+                }
+            });
+
+            // Display results
+            document.getElementById('accuracy').textContent = `Accuracy: ${accuracy.toFixed(2)}%`;
+            document.getElementById('speed').textContent = `Average Speed: ${speed.toFixed(2)} seconds per question`;
+            document.getElementById('results').classList.remove('hidden');
         }
 
+        // Initialize the quiz
         window.onload = function() {
+            if (!selectedOperator) {
+                selectedOperator = '+';
+            }
+            if (!selectedDifficulty) {
+                selectedDifficulty = 'easy';
+            }
             generateQuestions(selectedOperator, selectedDifficulty);
             startTimer();
-        }
+        };
     </script>
-    
 </body>
 </html>
