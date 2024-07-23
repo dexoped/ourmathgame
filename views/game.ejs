@@ -130,12 +130,7 @@
 
         // Initialize the quiz
         window.onload = function() {
-            if (!selectedOperator) {
-                selectedOperator = '+';
-            }
-            if (!selectedDifficulty) {
-                selectedDifficulty = 'easy';
-            }
+           
             generateQuestions(selectedOperator, selectedDifficulty);
             startTimer();
         };
