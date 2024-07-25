@@ -32,10 +32,19 @@
     </div>
 
     <script>
-        let selectedOperator = "<%= operator %>"; 
-        let selectedDifficulty = "<%= difficulty %>"; 
+        let selectedOperator = '';
+        let selectedDifficulty = '';
         let startTime;
         let timerInterval;
+
+        // Function to parse URL parameters
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                operator: params.get('operator'),
+                difficulty: params.get('difficulty')
+            };
+        }
 
         function startTimer() {
             startTime = Date.now();
@@ -130,7 +139,14 @@
 
         // Initialize the quiz
         window.onload = function() {
-           
+            const params = getQueryParams();
+            selectedOperator = params.operator;
+            selectedDifficulty = params.difficulty;
+            console.log(`Operator: ${selectedOperator}, Difficulty: ${selectedDifficulty}`);
+            if (!selectedOperator || !selectedDifficulty) {
+                console.error('Operator or difficulty not found in URL parameters.');
+                return;
+            }
             generateQuestions(selectedOperator, selectedDifficulty);
             startTimer();
         };
