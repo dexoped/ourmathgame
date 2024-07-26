@@ -6,22 +6,30 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Quiz Screen</title>
 </head>
-<body style="background: linear-gradient(162deg,#8FF277 37%, #05F9DC 100%); height: 130vh;">
-    <div class="h-15 border-8 border-green-300 bg-green-300" style="height: 80px;">
-        <h1 class="text-4xl font-bold text-center pt-3">Our Math Game</h1>
-    </div>
+<body style="background: linear-gradient(162deg,#8FF277 37%, #05F9DC 100%); height: 140vh;">
+    <div class="h-15 border-8 border-green-300 bg-green-300 flex items-center justify-center" style="height: 80px;">
+        <div class="absolute left-4">
+          <button onclick="window.history.back()"
+            class="bg-yellow-300 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded-full text-3xl w-16 h-16 flex items-center justify-center">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+        </div>
+        <h1 class="text-4xl font-bold">Our Math Game</h1>
+      </div>
     <div class="container mx-auto p-4 flex-grow flex flex-col items-center">
         <div class="w-full max-w-4xl bg-opacity-50 bg-white p-8 rounded-lg shadow-lg">
             <div class="flex justify-center items-center mb-4">
-                <div class="bg-blue-500 text-white p-2 rounded-full">
-                    <span id="timer">00:00:00</span>
+                <div class=" text-white p-2 rounded-full text-xl" style="background: linear-gradient(#11FD7E 0%, #0A8797 100%);">
+                    <span id="timer" class="p-8 text-5xl">00:00:00</span>
                 </div>
             </div>
             <div id="questions" class="space-y-4 mx-10">
                 <!-- Questions will be dynamically inserted here -->
             </div>
             <div class="flex justify-center mt-6">
-                <button id="submit-button" class="bg-blue-600 text-white py-2 px-6 rounded-lg text-xl" onclick="submitAnswers()">Submit</button>
+                <button id="submit-button" class=" text-white py-2 px-6 rounded-lg text-xl" style="background-color: #0400CB;" onclick="submitAnswers()">Submit</button>
             </div>
         </div>
     </div>
@@ -66,8 +74,8 @@
                 const question = document.createElement('div');
                 question.className = 'flex items-center justify-between p-2 bg-blue-200 rounded-lg';
                 question.innerHTML = `
-                    <span class="text-xl text-center mt-2">&nbsp;&nbsp;${num1} &nbsp; &nbsp;${operator}&nbsp;&nbsp; ${num2}&nbsp;&nbsp; = </span>
-                  <input type="text" class="answer-input w-24 mx-11 p-2 rounded-lg shadow" data-num1="${num1}" data-operator="${operator}" data-num2="${num2}">
+                    <span class="text-xl text-center mt-2">${i+1 }. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${num1} &nbsp; &nbsp;${operator}&nbsp;&nbsp; ${num2}&nbsp;&nbsp; = </span>
+                    <input type="text" class="answer-input w-24 mx-4 p-2 rounded-lg shadow" data-num1="${num1}" data-operator="${operator}" data-num2="${num2}">
                     <span class="correct-answer"></span>
                 `;
                 questionsContainer.appendChild(question);
@@ -95,8 +103,10 @@
                 if (userAnswer === correctAnswer) {
                     correctAnswersCount++;
                     input.classList.remove('wrong-answer');
+                    input.classList.add('bg-green-200');
                 } else {
-                    input.classList.add('wrong-answer');
+                    input.classList.remove('bg-green-200');
+                    input.classList.add('bg-red-200');
                 }
             });
 
