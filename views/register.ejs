@@ -32,26 +32,24 @@
                 </h2>
                 <br><br><br>
                 <div>
-                    <form action="/register" id="UF" method="post">
+                    <form id="registrationForm">
                         <label for="name" class="text-md w-40 inline-block font-medium leading-5 text-black">Name</label><br><br>
                         <input required type="text" id="name" name="name" maxlength="40" class="bg-gray-100 rounded-lg shadow-md px-6 py-3 mb-5 w-full text-base leading-6 placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500" placeholder="Type the Name"><br>
 
                         <label for="email" class="text-md w-40 inline-block font-medium leading-5 text-black">Email-Id</label><br>
-                        <br><input required type="email" id="email" name="email" class="bg-gray-100  rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 w-full placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500" placeholder="Type the Email">
+                        <br><input required type="email" id="email" name="email" class="bg-gray-100 rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 w-full placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500" placeholder="Type the Email">
 
-                        <label for="password" class="text-md w-40  font-medium leading-5 text-black">Password</label>
+                        <label for="password" class="text-md w-40 font-medium leading-5 text-black">Password</label>
                         <div class="password-wrapper inline-block w-full">
-                       <br>   <input required type="password" id="password" name="password" minlength="8" maxlength="8" class="bg-gray-100 rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 w-full placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500" placeholder="**********">
+                            <br><input required type="password" id="password" name="password" maxlength="15" class="bg-gray-100 rounded-lg shadow-md px-6 py-3 mb-5 text-base leading-6 w-full placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500" placeholder="**********">
                             <i class="fas fa-eye-slash" id="togglePassword"></i>
                         </div>
 
                         <h4 class="text-md inline-block font-medium leading-5 text-gray-700 text-black">Gender</h4>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <select aria-label="Gender" class="inline-block rounded-lg shadow-md m-4 text-base leading-6 placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500">
-                            <option class="text-md w-50 font-medium leading-5 text-gray-700 mr-4 text-black">Male</option>
-                            <option class="text-md w-50 font-medium leading-5 text-gray-700 mr-4 text-black">Female</option>
+                        <select aria-label="Gender" name="gender" class="inline-block rounded-lg shadow-md m-4 px-6 py-3 mb-5 text-base leading-6 placeholder-focus:invalid:border-green-500 focus:invalid:ring-green-500">
+                            <option value="Male" class="text-md w-50 font-medium leading-5 text-gray-700 mr-4 px-6 py-3 mb-5 text-black">Male</option>
+                            <option value="Female" class="text-md w-50 font-medium leading-5 text-gray-700 mr-4 px-6 py-3 mb-5 text-black">Female</option>
                         </select>
-                        <br>
                         <br>
                         <br>
                         <div class="flex justify-center">
@@ -63,9 +61,21 @@
         </div>
     </div>
 
+    <!-- Popup Modal -->
+    <div id="popup" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <p id="popupMessage" class="text-lg font-semibold text-center"></p>
+            <button id="closePopup" class="mt-4 bg-blue-700 text-white rounded-lg shadow-lg px-4 py-2 hover:bg-blue-500 focus:outline-none mx-auto block">Close</button>
+        </div>
+    </div>
+
     <script>
         const togglePassword = document.querySelector('#togglePassword');
         const password = document.querySelector('#password');
+        const form = document.querySelector('#registrationForm');
+        const popup = document.querySelector('#popup');
+        const popupMessage = document.querySelector('#popupMessage');
+        const closePopup = document.querySelector('#closePopup');
 
         togglePassword.addEventListener('click', function () {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -73,6 +83,38 @@
             this.classList.toggle('fa-eye-slash');
             this.classList.toggle('fa-eye');
         });
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const name = form.name.value;
+            const email = form.email.value;
+            const password = form.password.value;
+            const gender = form.gender.value;
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password, gender })
+                });
+                const data = await response.json();
+                showPopup(data.message);
+            } catch (error) {
+                showPopup('An error occurred. Please try again.');
+            }
+        });
+
+        closePopup.addEventListener('click', function () {
+            popup.classList.add('hidden');
+        });
+
+        function showPopup(message) {
+            popupMessage.textContent = message;
+            popup.classList.remove('hidden');
+        }
     </script>
 </body>
 </html>

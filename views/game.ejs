@@ -74,7 +74,7 @@
                 const question = document.createElement('div');
                 question.className = 'flex items-center justify-between p-2 bg-blue-200 rounded-lg';
                 question.innerHTML = `
-                    <span class="text-xl text-center mt-2">${i+1 }. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${num1} &nbsp; &nbsp;${operator}&nbsp;&nbsp; ${num2}&nbsp;&nbsp; = </span>
+                    <span class="text-xl text-center mt-2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${num1} &nbsp; &nbsp;${operator}&nbsp;&nbsp; ${num2}&nbsp;&nbsp; = </span>
                     <input type="text" class="answer-input w-24 mx-4 p-2 rounded-lg shadow" data-num1="${num1}" data-operator="${operator}" data-num2="${num2}">
                     <span class="correct-answer"></span>
                 `;

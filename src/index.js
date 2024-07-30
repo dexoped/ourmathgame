@@ -15,12 +15,10 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false } // Set secure: true in production with HTTPS
-  }));
-  
+}));
 
 app.get("/", (req, res)=> {
-    res.render("login")
-    
+    res.render("login");
 });
 
 app.get("/Dash", async (req, res) => {
@@ -88,10 +86,6 @@ app.get("/Dash", async (req, res) => {
   }
 });
 
-
-
-
-
 app.get("/selection", (req, res) => {
   if (req.session.user) {
       res.render("selection");
@@ -127,49 +121,51 @@ app.post('/submit-quiz', async (req, res) => {
 });
 
 app.get("/register", (req, res)=> {
-    res.render("register")
+    res.render("register");
 });
 
-app.post("/register", async (req,res)=>{
+app.post("/register", async (req, res)=>{
     try {
+        const existingUser = await collection.findOne({ name: req.body.name });
+        if (existingUser) {
+            return res.json({ success: false, message: 'Invalid credentials. Account already exists with the same name.' });
+        }
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const data = {
           name: req.body.name,
           password: hashedPassword
         };
-        const userdata = await collection.insertMany([data]);
-        console.log(userdata);
-        res.redirect("/");
-      } catch (error) {
+        await collection.insertMany([data]);
+        res.json({ success: true, message: 'Registration successful!' });
+    } catch (error) {
         console.error('Error registering user:', error);
-        res.send('Error registering user');
-      }
-})
+        res.json({ success: false, message: 'Error registering user' });
+    }
+});
 
 app.post("/login", async (req, res) => {
-    const { name, password } = req.body;
-    try {
-      const user = await collection.findOne({ name: name });
-      if (!user) {
-        console.log('User not found');
-        return res.send('Invalid credentials');
-      }
-      console.log('User found:', user);
-      const passwordMatch = await bcrypt.compare(password, user.password);
-      if (!passwordMatch) {
-        console.log('Password does not match');
-        return res.send('Invalid credentials');
-      }
-      console.log('Password matches');
-      req.session.user = user;
-      res.redirect("/Dash");
-    } catch (error) {
-      console.error('Error logging in user:', error);
-      res.send('Error logging in user');
+  const { name, password } = req.body;
+  try {
+    const user = await collection.findOne({ name: name });
+    if (!user) {
+      console.log('User not found');
+      return res.send('Invalid credentials');
     }
-  });
-
+    console.log('User found:', user);
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      console.log('Password does not match');
+      return res.send('Invalid credentials');
+    }
+    console.log('Password matches');
+    req.session.user = user;
+    res.redirect("/Dash");
+  } catch (error) {
+    console.error('Error logging in user:', error);
+    res.send('Error logging in user');
+  }
+});
 
 app.listen(3001, ()=>{
-    console.log('server running on 3001')
+    console.log('server running on 3001');
 });
